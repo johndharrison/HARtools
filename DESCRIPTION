@@ -12,7 +12,9 @@ Imports:
     magrittr,
     jsonlite
 Suggests:
-    testthat
+    testthat,
+    covr,
+    httr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
