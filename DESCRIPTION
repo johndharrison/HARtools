@@ -6,7 +6,7 @@ Authors@R:  c( person("John", "Harrison", , "johndharrison0@gmail.com",
 Description: HTTP Archive (HAR) utility methods for easy manipulation and
     lookup
 Depends:
-    R (>= 3.3.1)
+    R (>= 3.0.0)
 Imports:
     assertthat,
     magrittr
