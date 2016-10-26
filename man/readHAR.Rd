@@ -2,14 +2,23 @@
 % Please edit documentation in R/parse.R
 \name{readHAR}
 \alias{readHAR}
-\title{Title}
+\title{Read HAR objects}
 \usage{
 readHAR(har, ...)
 }
 \arguments{
-\item{...}{}
+\item{har}{a list/URL or file containing JSON HAR data}
+
+\item{...}{addtional arguments}
+}
+\value{
+returns a parsed HAR object
 }
 \description{
-Title
+Read HAR objects
+}
+\examples{
+har <- readHAR(system.file(package = "HARtools",
+                        "exdata", "google.com.har"))
 }
 

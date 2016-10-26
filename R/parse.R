@@ -1,12 +1,14 @@
-#' Title
+#' Read HAR objects
 #'
-#' @param har
-#' @param ...
+#' @param har a list/URL or file containing JSON HAR data
+#' @param ... addtional arguments
 #'
-#' @return
+#' @return returns a parsed HAR object
 #' @export
 #'
 #' @examples
+#' har <- readHAR(system.file(package = "HARtools",
+#'                         "exdata", "google.com.har"))
 
 readHAR <- function(har, ...){
   assert_that(is_list_URL_file(har))

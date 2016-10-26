@@ -4,12 +4,13 @@ Version: 0.0.1
 Authors@R:  c( person("John", "Harrison", , "johndharrison0@gmail.com",
     role = c("aut", "cre")))
 Description: HTTP Archive (HAR) utility methods for easy manipulation and
-    lookup
+    lookup.
 Depends:
     R (>= 3.0.0)
 Imports:
     assertthat,
-    magrittr
+    magrittr,
+    jsonlite
 Suggests:
     testthat
 License: GPL-3
