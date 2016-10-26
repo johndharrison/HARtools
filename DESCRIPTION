@@ -1,8 +1,10 @@
 Package: HARtools
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Title: HTTP Archive (HAR) utility methods for easy manipulation and lookup
+Version: 0.0.1
+Authors@R:  c( person("John", "Harrison", , "johndharrison0@gmail.com",
+    role = c("aut", "cre")))
+Description: HTTP Archive (HAR) utility methods for easy manipulation and
+    lookup
 Depends:
     R (>= 3.3.1)
 Imports:
@@ -10,7 +12,10 @@ Imports:
     magrittr
 Suggests:
     testthat
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/johndharrison/HARtools
+URLNote: https://github.com/johndharrison/HARtools
+BugReports: https://github.com/johndharrison/HARtools/issues
 RoxygenNote: 5.0.1
