@@ -19,6 +19,16 @@ test_that("nonHarFileGivesError", {
                "Could not parse har does not appear to be in JSON format")
 })
 
+test_that("fileGivesfromJSONOtherError", {
+  with_mock(
+    `jsonlite::fromJSON` = function(txt, ...) stop("test this message"),
+    expect_error(
+      readHAR(system.file(package = "HARtools", "DESCRIPTION")),
+      "test this message"
+    )
+  )
+})
+
 test_that("canParseHARUrl", {
   expect_silent(
     readHAR("http://www.janodvarko.cz/har/viewer/examples/google.com.har")
@@ -33,7 +43,7 @@ test_that("canParseHARFile", {
 
 test_that("canParseHARList", {
   har <- jsonlite::fromJSON(system.file(package = "HARtools",
-                              "exdata", "google.com.har"),
-                  simplifyVector = FALSE)
+                                        "exdata", "google.com.har"),
+                            simplifyVector = FALSE)
   expect_silent(readHAR(har))
 })
