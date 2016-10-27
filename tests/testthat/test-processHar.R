@@ -67,3 +67,33 @@ test_that("harLogWithMissingCreatorFieldGivesError", {
   )
 })
 
+test_that("harLogWithMissingEntryFieldGivesError", {
+  expect_error(
+    readHAR(
+      list(
+        log = list(
+          version = "1.2",
+          creator = list(name = "aa", version = "ss"),
+          entries = list(list())
+        )
+      )
+    ),
+    "as required by specification"
+  )
+})
+
+test_that("harLogWithMissingPageFieldGivesError", {
+  expect_error(
+    readHAR(
+      list(
+        log = list(
+          version = "1.2",
+          creator = list(name = "aa", version = "ss"),
+          entries = list(),
+          pages = list(list())
+        )
+      )
+    ),
+    "as required by specification"
+  )
+})

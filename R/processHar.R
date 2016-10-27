@@ -56,16 +56,16 @@ processHARBrowser <- function(harbrowser, ...){
 }
 
 processHARPages <- function(harpages, ...){
-  harpages <- lapply(harpages, function(x){
+  harpages <- lapply(harpages, function(harpage){
     assert_that(
-      contains_required(x, c("startedDateTime", "id",
+      contains_required(harpage, c("startedDateTime", "id",
                              "title", "pageTimings"))
     )
     assert_that(
-      fields_valid(x, c("startedDateTime", "id",
+      fields_valid(harpage, c("startedDateTime", "id",
                         "title", "pageTimings", "comment"))
     )
-    processHARPage(x, ...)
+    processHARPage(harpage, ...)
   }
   )
   assignClass(harpages, "harpages")
@@ -76,17 +76,17 @@ processHARPage <- function(harpage, ...){
 }
 
 processHAREntries <- function(harentries, ...){
-  harentries <- lapply(harentries, function(x){
+  harentries <- lapply(harentries, function(harentry){
     assert_that(
-      contains_required(x, c("startedDateTime", "time", "request",
-                             "response", "cache", "timings"))
+      contains_required(harentry, c("startedDateTime", "time", "request",
+                                    "response", "cache", "timings"))
     )
     assert_that(
-      fields_valid(x, c("startedDateTime", "time", "request", "response",
-                        "cache", "timings", "pageref", "serverIPAddress",
-                        "connection", "comment"))
+      fields_valid(harentry, c("startedDateTime", "time", "request",
+                               "response", "cache", "timings", "pageref",
+                               "serverIPAddress", "connection", "comment"))
     )
-    processHAREntry(x, ...)
+    processHAREntry(harentry, ...)
   }
   )
   assignClass(harentries, "harentries")
@@ -102,8 +102,8 @@ processHAREntry <- function(harentry, ...){
   )
   assert_that(
     fields_valid(req, c("method", "url", "httpVersion", "cookies",
-                      "headers", "queryString", "headersSize", "bodySize",
-                      "headersCompression", "comment"))
+                        "headers", "queryString", "headersSize", "bodySize",
+                        "headersCompression", "comment"))
   )
   harentry[["request"]] <- processHARRequest(req, ...)
 
@@ -116,9 +116,9 @@ processHAREntry <- function(harentry, ...){
   )
   assert_that(
     fields_valid(res, c("status", "statusText", "httpVersion",
-                      "cookies", "headers", "content",
-                      "redirectURL", "headersSize", "bodySize",
-                      "headersCompression", "comment"))
+                        "cookies", "headers", "content",
+                        "redirectURL", "headersSize", "bodySize",
+                        "headersCompression", "comment"))
   )
   harentry[["response"]] <- processHARResponse(res, ...)
 
