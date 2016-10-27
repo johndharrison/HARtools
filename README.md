@@ -26,7 +26,7 @@ devtools::install_github("johndharrison/HARtools")
 #### Read from file
 
 ```
-har <- readHAR(system.file(package = "HARtools", "exdata",     "inline-scripts-block.har"))
+har <- readHAR(system.file(package = "HARtools", "exdata", "inline-scripts-block.har"))
 
 > har
 --------HAR VERSION-------- 
