@@ -5,12 +5,12 @@ test_that("harLogWithoutRequiredFieldsGivesError", {
                paste("version", "creator", "entries", sep = ","))
 })
 
-test_that("harLogWithinvalidFieldsGivesError", {
+test_that("harLogWithInvalidFieldsGivesError", {
   expect_error(
     readHAR(
       list(
         log = list(
-          version = list(),
+          version = "",
           creator = list(),
           entries = list(),
           somefield = list()
@@ -21,3 +21,49 @@ test_that("harLogWithinvalidFieldsGivesError", {
           "browser", "pages", "comment", sep = ",")
   )
 })
+
+test_that("harLogWithInvalidVersionError", {
+  expect_error(
+    readHAR(
+      list(
+        log = list(
+          version = 1L,
+          creator = list(),
+          entries = list()
+        )
+      )
+    ),
+    "is not a string"
+  )
+})
+
+test_that("harLogWithInvalidCreatorFieldGivesError", {
+  expect_error(
+    readHAR(
+      list(
+        log = list(
+          version = "1.2",
+          creator = list(name = "aa", version = "ss", someField = ""),
+          entries = list()
+        )
+      )
+    ),
+    "has an invalid field:"
+  )
+})
+
+test_that("harLogWithMissingCreatorFieldGivesError", {
+  expect_error(
+    readHAR(
+      list(
+        log = list(
+          version = "1.2",
+          creator = list(version = "ss", comment = ""),
+          entries = list()
+        )
+      )
+    ),
+    "does not have one of"
+  )
+})
+
