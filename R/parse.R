@@ -26,7 +26,7 @@ readHAR <- function(har, ...){
 
 readHARList <- function(har, ...){
   assert_that(is_list_HAR(har))
-  return(har)
+  processHAR(har)
 }
 
 readHARURL <- function(har, ...){
