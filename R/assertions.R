@@ -47,16 +47,31 @@ assertthat::on_failure(is_list_HAR) <- function(call, env) {
   paste0(deparse(call$x), " does not look like a HAR list/object")
 }
 
-contains_required_HARlog <- function(x){
+contains_required <- function(x, required){
   # see https://github.com/ahmadnassri/har-spec/blob/master/versions/1.3.md
-  is.list(x) && (c("version", "creator", "entries") %in% names(x))
+  is.list(x) && (required %in% names(x))
 }
 
-assertthat::on_failure(contains_required_HARlog) <- function(call, env) {
+assertthat::on_failure(contains_required) <- function(call, env) {
+  required <- eval(call$required, env)
   paste0(deparse(call$x),
          " does not have one of ",
-         paste("version", "creator", "entries", sep = ","),
+         paste(required, collapse = ","),
          " as required by specification."
-         )
+  )
 }
 
+fields_valid <- function(x,valid_fields){
+  # see https://github.com/ahmadnassri/har-spec/blob/master/versions/1.3.md
+  field_test <- identical(sum(!(names(x) %in% valid_fields)), 0L)
+  is.list(x) && field_test
+}
+
+assertthat::on_failure(fields_valid) <- function(call, env) {
+  valid_fields<- eval(call$valid_fields, env)
+  paste0(deparse(call$x),
+         " has an invalid field:  ",
+         paste(valid_fields, collapse = ","),
+         " allowed by specification."
+  )
+}
