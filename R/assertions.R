@@ -46,3 +46,17 @@ is_list_HAR <- function(x){
 assertthat::on_failure(is_list_HAR) <- function(call, env) {
   paste0(deparse(call$x), " does not look like a HAR list/object")
 }
+
+contains_required_HARlog <- function(x){
+  # see https://github.com/ahmadnassri/har-spec/blob/master/versions/1.3.md
+  is.list(x) && (c("version", "creator", "entries") %in% names(x))
+}
+
+assertthat::on_failure(contains_required_HARlog) <- function(call, env) {
+  paste0(deparse(call$x),
+         " does not have one of ",
+         paste("version", "creator", "entries", sep = ","),
+         " as required by specification."
+         )
+}
+
