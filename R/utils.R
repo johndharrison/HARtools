@@ -47,6 +47,18 @@ print.harpage <- function(x, ...){
 print.harentries <- function(x, ...){
   cat("--------HAR ENTRIES--------", "\n")
   cat("Number of entries:", length(x), "\n")
+  cat("REQUESTS:", "\n")
+  lapply(x, function(y) print(y[["request"]]))
+}
+
+#' @export
+print.harrequest <- function(x, ..., width = getOption("width")){
+  reqUrl <- if(nchar(x[["url"]]) > width - 7){
+    paste0(substr(x[["url"]], 1, width - 7), "...")
+  }else{
+    x[["url"]]
+  }
+  cat("  - ", reqUrl, "\n")
 }
 
 assignClass <- function(x, classx){

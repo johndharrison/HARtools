@@ -14,7 +14,7 @@ processHAR <- function(har, ...){
 
 processHARLog <- function(harlog, ...){
   assert_that(is_string(harlog[["version"]]))
-  harlog[["version"]] <- processHARVersion(harlog[["version"]])
+  harlog[["version"]] <- processHARVersion(harlog[["version"]], ...)
 
 
   assert_that(
@@ -23,7 +23,7 @@ processHARLog <- function(harlog, ...){
   assert_that(
     fields_valid(harlog[["creator"]], c("name", "version", "comment"))
   )
-  harlog[["creator"]] <- processHARCreator(harlog[["creator"]])
+  harlog[["creator"]] <- processHARCreator(harlog[["creator"]], ...)
 
   if(!is.null(harlog[["browser"]])){
     assert_that(
@@ -32,14 +32,14 @@ processHARLog <- function(harlog, ...){
     assert_that(
       fields_valid(harlog[["browser"]], c("name", "version", "comment"))
     )
-    harlog[["browser"]] <- processHARBrowser(harlog[["browser"]])
+    harlog[["browser"]] <- processHARBrowser(harlog[["browser"]], ...)
   }
 
   if(!is.null(harlog[["pages"]])){
-    harlog[["pages"]] <- processHARPages(harlog[["pages"]])
+    harlog[["pages"]] <- processHARPages(harlog[["pages"]], ...)
   }
 
-  harlog[["entries"]] <- processHAREntries(harlog[["entries"]])
+  harlog[["entries"]] <- processHAREntries(harlog[["entries"]], ...)
   assignClass(harlog, "harlog")
 }
 
@@ -65,7 +65,7 @@ processHARPages <- function(harpages, ...){
       fields_valid(x, c("startedDateTime", "id",
                         "title", "pageTimings", "comment"))
     )
-    processHARPage(x)
+    processHARPage(x, ...)
   }
   )
   assignClass(harpages, "harpages")
@@ -76,6 +76,60 @@ processHARPage <- function(harpage, ...){
 }
 
 processHAREntries <- function(harentries, ...){
+  harentries <- lapply(harentries, function(x){
+    assert_that(
+      contains_required(x, c("startedDateTime", "time", "request",
+                             "response", "cache", "timings"))
+    )
+    assert_that(
+      fields_valid(x, c("startedDateTime", "time", "request", "response",
+                        "cache", "timings", "pageref", "serverIPAddress",
+                        "connection", "comment"))
+    )
+    processHAREntry(x, ...)
+  }
+  )
   assignClass(harentries, "harentries")
+}
+
+processHAREntry <- function(harentry, ...){
+  #REQUEST
+  req <- harentry[["request"]]
+  assert_that(
+    contains_required(req, c("method", "url", "httpVersion", "cookies",
+                             "headers", "queryString",
+                             "headersSize", "bodySize"))
+  )
+  assert_that(
+    fields_valid(req, c("method", "url", "httpVersion", "cookies",
+                      "headers", "queryString", "headersSize", "bodySize",
+                      "headersCompression", "comment"))
+  )
+  harentry[["request"]] <- processHARRequest(req, ...)
+
+  #RESPONSE
+  res <- harentry[["response"]]
+  assert_that(
+    contains_required(res, c("status", "statusText", "httpVersion",
+                             "cookies", "headers", "content",
+                             "redirectURL", "headersSize", "bodySize"))
+  )
+  assert_that(
+    fields_valid(res, c("status", "statusText", "httpVersion",
+                      "cookies", "headers", "content",
+                      "redirectURL", "headersSize", "bodySize",
+                      "headersCompression", "comment"))
+  )
+  harentry[["response"]] <- processHARResponse(res, ...)
+
+  assignClass(harentry, "harentry")
+}
+
+processHARRequest <- function(harrequest, ...){
+  assignClass(harrequest, "harrequest")
+}
+
+processHARResponse <- function(harresponse, ...){
+  assignClass(harresponse, "harresponse")
 }
 
