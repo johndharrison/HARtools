@@ -48,7 +48,32 @@ print.harentries <- function(x, ...){
   cat("--------HAR ENTRIES--------", "\n")
   cat("Number of entries:", length(x), "\n")
   cat("REQUESTS:", "\n")
-  lapply(x, function(y) print(y[["request"]]))
+  # check for pageref
+  pageRefs <-
+    vapply(x, function(y){
+      ifelse(is.null(y[["pageref"]]), NA_character_, y[["pageref"]])
+    },
+    character(1)
+    )
+  if(any(is.na(pageRefs))){
+    printGroups <- headtail(seq(x), 5)
+    lapply(seq(printGroups), function(printno){
+      if(printno > 1) cat("     ........", "\n")
+      lapply(x[printGroups[[printno]]], function(y) print(y[["request"]]))
+    })
+  }else{
+    pR <- split(x, pageRefs)
+    lapply(names(pR), function(pr){
+      cat("Page:", pr, "\n")
+      cat("Number of entries:", length(pR[[pr]]), "\n")
+      printGroups <- headtail(seq(pR[[pr]]), 5)
+      lapply(seq(printGroups), function(printno){
+        if(printno > 1) cat("     ........", "\n")
+        lapply(pR[[pr]][printGroups[[printno]]],
+               function(y) print(y[["request"]]))
+      })
+    })
+  }
 }
 
 #' @export
@@ -70,4 +95,12 @@ assignClass <- function(x, classx){
 
 print_if_not_null <- function(x, ...){
   if(!is.null(x)) print(x, ...)
+}
+
+headtail <- function(x, n){
+  if(length(x) > 2*n){
+    list(head(x, n), tail(x, n))
+  }else{
+    list(seq(x))
+  }
 }
