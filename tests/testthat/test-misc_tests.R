@@ -20,3 +20,11 @@ test_that("canPrintHarNoPageRef", {
            function(x){x[["pageref"]] <- NULL; x})
   expect_output(print(readHAR(har)))
 })
+
+test_that("canPrintHarPageLongEntries", {
+  har <- jsonlite::fromJSON(system.file(package = "HARtools",
+                                        "exdata",
+                                        "softwareishard.com.har"),
+                            simplifyVector = FALSE)
+  expect_output(print(readHAR(har)))
+})
