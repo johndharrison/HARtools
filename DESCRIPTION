@@ -10,7 +10,8 @@ Depends:
 Imports:
     assertthat,
     magrittr,
-    jsonlite
+    jsonlite,
+    htmlwidgets
 Suggests:
     testthat,
     covr,
