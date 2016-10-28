@@ -103,7 +103,7 @@ processHAREntry <- function(harentry, ...){
   assert_that(
     fields_valid(req, c("method", "url", "httpVersion", "cookies",
                         "headers", "queryString", "headersSize", "bodySize",
-                        "headersCompression", "comment"))
+                        "postData", "headersCompression", "comment"))
   )
   harentry[["request"]] <- processHARRequest(req, ...)
 
