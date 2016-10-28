@@ -63,7 +63,9 @@ assertthat::on_failure(contains_required) <- function(call, env) {
 
 fields_valid <- function(x,valid_fields){
   # see https://github.com/ahmadnassri/har-spec/blob/master/versions/1.3.md
-  field_test <- identical(sum(!(names(x) %in% valid_fields)), 0L)
+  # custome fields starting with underscore are allowed in spec
+  test_names <- grep("^_.*", names(x), value = TRUE, invert = TRUE)
+  field_test <- identical(sum(!(test_names %in% valid_fields)), 0L)
   is.list(x) && field_test
 }
 
