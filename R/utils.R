@@ -57,13 +57,14 @@ print.harentries <- function(x, ...){
     )
   if(any(is.na(pageRefs))){
     printGroups <- headtail(seq(x), 5)
-    lapply(seq(printGroups), function(printno){
+    dum <- lapply(seq(printGroups), function(printno){
       if(printno > 1) cat("     ........", "\n")
-      lapply(x[printGroups[[printno]]], function(y) print(y[["request"]]))
+      lapply(x[printGroups[[printno]]],
+             function(y) print(y[["request"]]))
     })
   }else{
     pR <- split(x, pageRefs)
-    lapply(names(pR), function(pr){
+    dum <- lapply(names(pR), function(pr){
       cat("Page:", pr, "\n")
       cat("Number of entries:", length(pR[[pr]]), "\n")
       printGroups <- headtail(seq(pR[[pr]]), 5)
