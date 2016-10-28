@@ -1,0 +1,9 @@
+dependencies:
+  - name: PerfCascade
+    version: 0.2.1
+    src: htmlwidgets/lib/PerfCascade
+    script:
+      - dist/perf-cascade.min.js
+      - dist/perf-cascade-file-reader.min.js
+    stylesheet:
+      - dist/perf-cascade.css
