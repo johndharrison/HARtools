@@ -1,6 +1,6 @@
 Package: HARtools
 Title: HTTP Archive (HAR) utility methods for easy manipulation and lookup
-Version: 0.0.1
+Version: 0.0.2
 Authors@R:  c( person("John", "Harrison", , "johndharrison0@gmail.com",
     role = c("aut", "cre")))
 Description: HTTP Archive (HAR) utility methods for easy manipulation and
