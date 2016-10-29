@@ -8,10 +8,13 @@ HTMLWidgets.widget({
     var elementId = el.id;
     var HARviewer =  perfCascade;
     var outputHolderEl = document.getElementById(elementId);
+    var pageSelectorEl = document.getElementById("page-selector");
 
     return {
       renderValue: function(opts) {
-        HARSvg = HARviewer.fromHar(opts.data.log, opts.options);
+        newopts = opts;
+        newopts.options.pageSelector = pageSelectorEl;
+        HARSvg = HARviewer.fromHar(newopts.data.log, newopts.options);
         outputHolderEl.appendChild(HARSvg);
       },
 

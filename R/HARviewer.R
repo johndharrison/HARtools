@@ -14,3 +14,10 @@ HARviewer <- function(har, width = NULL, height = NULL, elementId = NULL){
   htmlwidgets::createWidget("HARviewer", x, width = width, height = height,
                             package = "HARtools", elementId = elementId)
 }
+
+HARviewer_html <- function(id, style, class, ...){
+  htmltools::tags$div(
+    htmltools::tags$select(id="page-selector"),
+    htmltools::tags$div(id = id, style = style, class = class)
+  )
+}
