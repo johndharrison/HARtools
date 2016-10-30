@@ -16,8 +16,10 @@ HARviewer <- function(har, width = NULL, height = NULL, elementId = NULL){
 }
 
 HARviewer_html <- function(id, style, class, ...){
-  htmltools::tags$div(
-    htmltools::tags$select(id="page-selector"),
-    htmltools::tags$div(id = id, style = style, class = class)
+  htmltools::renderTags(
+    htmltools::tags$div(
+      htmltools::tags$select(id="page-selector"),
+      htmltools::tags$div(id = id, style = style, class = class)
+    )
   )
 }
