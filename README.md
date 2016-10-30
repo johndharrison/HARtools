@@ -91,7 +91,14 @@ Number of entries: 5
 ```
 har <- readHAR(system.file(package = "HARtools", "exdata",
                            "r-project.org.161028_W2_11MA.har"))
-HARviewer(har)
+hv <- HARviewer(har)
+# view in R
+hv
+
+# save and view
+tFile <- tempfile(fileext = ".html")
+htmlwidgets::saveWidget(hv,file = tFile)
+browseURL(tFile)
 
 ```
 
