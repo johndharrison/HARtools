@@ -6,9 +6,10 @@
 #' @param height Optional height of the HAR viewer
 #' @param elementId Optional element id to assign to the HAR viewer
 #'
-#' @return Returns a \code{\link[htmlwidgets]{createWidget}} object. A waterfall of the HAR
-#'    using the \url{https://github.com/micmro/PerfCascade} JavaScript
-#'    library.
+#' @return Returns a \code{\link[htmlwidgets]{createWidget}} object. A
+#'    waterfall of the HAR using the
+#'    \href{https://github.com/micmro/PerfCascade}{PerfCascade}
+#'    JavaScript library.
 #' @export
 #'
 #' @examples

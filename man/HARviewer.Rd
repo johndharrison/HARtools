@@ -16,9 +16,10 @@ HARviewer(har, width = NULL, height = NULL, elementId = NULL)
 \item{elementId}{Optional element id to assign to the HAR viewer}
 }
 \value{
-Returns a \code{\link[htmlwidgets]{createWidget}} object. A waterfall of the HAR
-   using the \url{https://github.com/micmro/PerfCascade} JavaScript
-   library.
+Returns a \code{\link[htmlwidgets]{createWidget}} object. A
+   waterfall of the HAR using the
+   \href{https://github.com/micmro/PerfCascade}{PerfCascade}
+   JavaScript library.
 }
 \description{
 Create a waterfall view of a HAR object
