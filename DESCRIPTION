@@ -19,7 +19,8 @@ Imports:
 Suggests:
     testthat,
     covr,
-    httr
+    httr,
+    shiny
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
