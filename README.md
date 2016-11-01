@@ -88,6 +88,10 @@ Number of entries: 5
 
 #### View the HAR
 
+`HARtools` includes a HARviewer function which utilises the 
+[PerfCascade](https://github.com/micmro/PerfCascade) JavaScript library to 
+produce an interactive waterfall chart of the HAR data:
+
 ```
 har <- readHAR(system.file(package = "HARtools", "exdata",
                            "r-project.org.161028_W2_11MA.har"))
