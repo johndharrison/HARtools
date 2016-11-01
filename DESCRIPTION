@@ -1,10 +1,10 @@
 Package: HARtools
 Title: HTTP Archive (HAR) utility methods for easy manipulation and lookup
-Version: 0.0.2
+Version: 0.0.3
 Authors@R:  c(
     person("John", "Harrison", , "johndharrison0@gmail.com",
       role = c("aut", "cre"), comment = "R package HARtools"),
-    person("Michael", "Mrowetz", role = c("aut"),
+    person("Michael", "Mrowetz", role = c("aut", "cph"),
       comment = "PerfCascade library, https://micmro.github.io/PerfCascade/"))
 Description: HTTP Archive (HAR) utility methods for easy manipulation and
     lookup.
@@ -14,7 +14,8 @@ Imports:
     assertthat,
     magrittr,
     jsonlite,
-    htmlwidgets
+    htmlwidgets,
+    htmltools
 Suggests:
     testthat,
     covr,
