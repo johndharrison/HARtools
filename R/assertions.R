@@ -26,17 +26,23 @@ assertthat::on_failure(is_file) <-  function(call, env) {
 is_list_URL_file <- function(x){
   if(is.list(x)){
     TRUE
+  }else if(is_url(x) || is_file(x)){
+    TRUE
   }else{
-    if(is_url(x) || is_file(x)){
-      TRUE
-    }else{
-      FALSE
-    }
+    FALSE
   }
 }
 
 assertthat::on_failure(is_list_URL_file) <- function(call, env) {
   paste0(deparse(call$x), " is not a list, URL or file")
+}
+
+is_list_URL_file_string <- function(x){
+  is_list_URL_file(x) || is_string(x)
+}
+
+assertthat::on_failure(is_list_URL_file_string) <- function(call, env) {
+  paste0(deparse(call$x), " is not a string, list, URL or file")
 }
 
 is_list_HAR <- function(x){
