@@ -85,7 +85,7 @@ assertthat::on_failure(fields_valid) <- function(call, env) {
 }
 
 is_HAR <- function(x){
-  inherits(har, "har")
+  inherits(x, "har")
 }
 
 assertthat::on_failure(is_HAR) <- function(call, env) {
