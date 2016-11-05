@@ -83,3 +83,29 @@ assertthat::on_failure(fields_valid) <- function(call, env) {
          " allowed by specification."
   )
 }
+
+is_HAR <- function(x){
+  inherits(har, "har")
+}
+
+assertthat::on_failure(is_HAR) <- function(call, env) {
+  paste0(deparse(call$x), " does not appear to be a 'har' object")
+}
+
+is_logical <- function(x){
+  is.logical(x)
+}
+
+assertthat::on_failure(is_logical) <- function(call, env) {
+  paste0(deparse(call$x), " should be a logical value.")
+}
+
+is_writeable_path <- function(x){
+  is_string(x) && file.access(dirname(x), 2) == 0L &&
+    dir.exists(dirname(x))
+}
+
+assertthat::on_failure(is_writeable_path) <-  function(call, env) {
+  paste0(sub(caArgsReg, "\\1", deparse(call[["x"]])),
+         " is not a writeable file/path")
+}
