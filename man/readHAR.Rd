@@ -7,7 +7,7 @@
 readHAR(har, ...)
 }
 \arguments{
-\item{har}{a list/URL or file containing JSON HAR data}
+\item{har}{a string, list/URL or file containing JSON HAR data}
 
 \item{...}{addtional arguments}
 }

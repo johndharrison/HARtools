@@ -1,6 +1,6 @@
 #' Read HAR objects
 #'
-#' @param har a list/URL or file containing JSON HAR data
+#' @param har a string, list/URL or file containing JSON HAR data
 #' @param ... addtional arguments
 #'
 #' @return returns a parsed HAR object
@@ -11,7 +11,7 @@
 #'                         "exdata", "google.com.har"))
 
 readHAR <- function(har, ...){
-  assert_that(is_list_URL_file(har))
+  assert_that(is_list_URL_file_string(har))
   if(is.list(har)){
     return(readHARList(har, ...))
   }
@@ -20,6 +20,19 @@ readHAR <- function(har, ...){
   }
   if(is_file(har)){
     return(readHARfile(har, ...))
+  }
+  if(is_string(har)){
+    chk <- tryCatch({
+      fromJSON(har, simplifyVector = FALSE)
+    },
+    error = function(e){
+      if(grepl("lexical error: invalid", e$message)){
+        stop("har string does not appear to be valid JSON")
+      }else{
+        stop(e$message)
+      }
+    })
+    return(readHARList(chk, ...))
   }
 }
 
