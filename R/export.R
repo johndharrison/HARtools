@@ -3,7 +3,7 @@
 #' @param har A parsed har object output from \code{\link{readHAR}}
 #' @param file A string indicating the file name to write the HAR data to.
 #' @param force If the file exists overwrite it. Defaults to TRUE
-#' @param ...
+#' @param ... addtional arguments
 #'
 #' @export
 #'

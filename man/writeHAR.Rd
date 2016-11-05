@@ -13,7 +13,7 @@ writeHAR(har, file, force = TRUE, ...)
 
 \item{force}{If the file exists overwrite it. Defaults to TRUE}
 
-\item{...}{}
+\item{...}{addtional arguments}
 }
 \description{
 Write HAR object to file
