@@ -1,7 +1,9 @@
 context("parse")
 
 test_that("nonURLFilestringGivesError", {
-  expect_error(readHAR("jj"), "har is not a list, URL or file")
+  expect_error(readHAR("jj"),
+               "har string does not appear to be valid JSON
+ ")
 })
 
 test_that("nonHarListGivesError", {
@@ -45,5 +47,11 @@ test_that("canParseHARList", {
   har <- jsonlite::fromJSON(system.file(package = "HARtools",
                                         "exdata", "google.com.har"),
                             simplifyVector = FALSE)
+  expect_silent(readHAR(har))
+})
+
+test_that("canParseHARString", {
+  fileName <- system.file(package = "HARtools", "exdata", "google.com.har")
+  har <- readChar(fileName, file.info(fileName)$size)
   expect_silent(readHAR(har))
 })
