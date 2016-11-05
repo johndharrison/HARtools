@@ -2,8 +2,7 @@ context("parse")
 
 test_that("nonURLFilestringGivesError", {
   expect_error(readHAR("jj"),
-               "har string does not appear to be valid JSON
- ")
+               "har string does not appear to be valid JSON")
 })
 
 test_that("nonHarListGivesError", {
