@@ -5,12 +5,12 @@ HARtools
 | [![](http://www.r-pkg.org/badges/version/HARtools)](https://CRAN.R-project.org/package=HARtools) | [![Build Status](https://travis-ci.org/johndharrison/HARtools.svg?branch=master)](https://travis-ci.org/johndharrison/HARtools) | [![codecov](https://codecov.io/gh/johndharrison/HARtools/branch/master/graph/badge.svg)](https://codecov.io/gh/johndharrison/HARtools)|
 
 
-##### *HTTP Archive (HAR) utility methods for easy manipulation and lookup*
+##### *HAR utility functions for easy parsing/writing and manipulation in R*
 
 ### Introduction
 
 HARtools provdes tools and utilities to interact with HTTP Archive (HAR) 
-files. 
+files in R. 
 
 ### Install
 
