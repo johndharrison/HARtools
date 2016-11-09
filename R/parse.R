@@ -22,6 +22,7 @@ readHAR <- function(har, ...){
     return(readHARfile(har, ...))
   }
   if(is_string(har)){
+    Encoding(har) <- "UTF-8" # as per spec
     chk <- tryCatch({
       fromJSON(har, simplifyVector = FALSE)
     },

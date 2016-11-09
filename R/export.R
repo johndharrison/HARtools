@@ -25,5 +25,5 @@ writeHAR <- function(har, file, force = TRUE, ...){
   if(file.exists(file) || !force){
     stop("file already exists")
   }
-  write(HARJSON, file = file)
+  write(enc2utf8(HARJSON), file = file)
 }
