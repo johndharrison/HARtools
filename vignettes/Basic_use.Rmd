@@ -1,0 +1,46 @@
+---
+title: "HARtools: Basic Use"
+author: "John D Harrison"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The goal of this vignette is to describe the basic functions in the 
+`HARtools` package.
+
+## HAR format
+
+HAR stands for HTTP Archive. This is a common format for recording HTTP 
+tracing information. This file contains a variety of information. It has a 
+record of each object being loaded by a browser. Each of these objects’ 
+timings is recorded. The common extension for these files is .har.  The 
+specification for this format is produced by the Web Performance Working
+Group of the World Wide Web Consortium (W3C).
+
+An outline of the specification can be viewed at [softwareishard.com](http://www.softwareishard.com/blog/har-12-spec/)
+
+## HARtools basics
+
+`HARtools` is a lightweight package containing a number of tools to
+read/parse, visualise and write files in the HAR format.
+
+### Reading HAR files
+`readHAR` is the function whoose aim is to read read/parse HAR objects. It
+currently can read/parse a number of formats. It takes an argument `har` 
+which currently can be a character string, an R list, a URL or a file
+containing HAR data.
+
+#### Reading/Parsing from file
+
+The `HARtools` package contains a number of examples of HAR files. We will
+use one of these (HAR data from browsing `google.com`):
+
+```{r}
+har <- readHAR(system.file(package = "HARtools", 
+                           "exdata", "google.com.har"))
+har
+```

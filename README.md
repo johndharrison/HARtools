@@ -80,7 +80,7 @@ REQUESTS:
   Page: page_62143 
 Number of entries: 5 
 -  http://www.google.cz/ 
-  -  http://www.google.cz/intl/en_com/images/logo_plain.png 
+-  http://www.google.cz/intl/en_com/images/logo_plain.png 
 -  http://www.google.cz/extern_js/f/CgJjcxICY3orMAo4QUAdLCswDjgKLCswFjgULCsw... 
 -  http://clients1.google.cz/generate_204 
 -  http://www.google.cz/images/nav_logo7.png 
