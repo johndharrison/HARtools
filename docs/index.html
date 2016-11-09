@@ -19,6 +19,9 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
+  <a href="articles/index.html">Articles</a>
+</li>
+<li>
   <a href="news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -65,7 +68,8 @@
 <div id="read-from-file" class="section level4">
 <h4 class="hasAnchor">
 <a href="#read-from-file" class="anchor"> </a>Read from file</h4>
-<pre><code>exampleHAR &lt;- 
+<pre><code>library(HARtools)
+exampleHAR &lt;- 
   system.file(package = "HARtools", "exdata", "inline-scripts-block.har")
 har &lt;- readHAR(exampleHAR)
 &gt; har
@@ -118,7 +122,7 @@ REQUESTS:
   Page: page_62143 
 Number of entries: 5 
 -  http://www.google.cz/ 
-  -  http://www.google.cz/intl/en_com/images/logo_plain.png 
+-  http://www.google.cz/intl/en_com/images/logo_plain.png 
 -  http://www.google.cz/extern_js/f/CgJjcxICY3orMAo4QUAdLCswDjgKLCswFjgULCsw... 
 -  http://clients1.google.cz/generate_204 
 -  http://www.google.cz/images/nav_logo7.png </code></pre>
@@ -140,6 +144,27 @@ browseURL(tFile)
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/johndharrison/HARtools/master/inst/misc/rprojectHAR.png" alt="alt tag"></p>
 <p>The resulting output of HARviewer can be interacted with <a href="http://rpubs.com/johndharrison/rprojectHAR">here</a>.</p>
+</div>
+<div id="embed-in-a-shiny-app" class="section level4">
+<h4 class="hasAnchor">
+<a href="#embed-in-a-shiny-app" class="anchor"> </a>Embed in a Shiny app</h4>
+<pre><code>library(shiny)
+if(interactive()){
+  library(HARtools)
+  har &lt;- readHAR(system.file(package = "HARtools", "exdata",
+                             "r-project.org.161028_W2_11MA.har"))
+  hv &lt;- HARviewer(har)
+  
+  app &lt;- shinyApp(
+    ui = fluidPage(
+      HARviewerOutput("myHAR")
+    ),
+    server = function(input, output) {
+      output$myHAR &lt;- renderHARviewer(hv)
+    }
+  )  
+  runApp(app)
+}</code></pre>
 </div>
 </div>
 </div>
