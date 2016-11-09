@@ -2,13 +2,19 @@
 title: "HARtools: Basic Use"
 author: "John D Harrison"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 80)
+```
 The goal of this vignette is to describe the basic functions in the 
 `HARtools` package.
 
@@ -32,7 +38,8 @@ read/parse, visualise and write files in the HAR format.
 `readHAR` is the function whoose aim is to read read/parse HAR objects. It
 currently can read/parse a number of formats. It takes an argument `har` 
 which currently can be a character string, an R list, a URL or a file
-containing HAR data.
+containing HAR data. It also carries out basic validation on the HAR 
+content (checking mandatory/optional fields).
 
 #### Reading/Parsing from file
 
@@ -40,7 +47,149 @@ The `HARtools` package contains a number of examples of HAR files. We will
 use one of these (HAR data from browsing `google.com`):
 
 ```{r}
+library(HARtools)
 har <- readHAR(system.file(package = "HARtools", 
                            "exdata", "google.com.har"))
 har
 ```
+```{r}
+names(har)
+names(har[["log"]])
+```
+
+So we see that a HAR object is a list with root `log` and children as 
+defined per the specification. 
+
+#### Reading/Parsing a URL
+The same HAR data we sourced from file is available [online](http://www.janodvarko.cz/har/viewer/examples/google.com.har).
+
+```{r}
+harData <- "http://www.janodvarko.cz/har/viewer/examples/google.com.har"
+harURL <- readHAR(harData)
+identical(harURL, har)
+```
+
+#### Reading/Parsing an R character string
+
+`readHAR` can read/parse an R character string
+
+```{r}
+fileName <- system.file(package = "HARtools", "exdata", "google.com.har")
+harString <- readChar(fileName, file.info(fileName)$size)
+print(substr(harString, 1, 5*80))
+harSTR <- readHAR(harString)
+identical(harSTR, har)
+
+```
+
+#### Reading/Parsing an R list
+
+`readHAR` can read/parse an R list.
+
+```{r}
+harL <- jsonlite::fromJSON(system.file(package = "HARtools",
+                                          "exdata", "google.com.har"),
+                              simplifyVector = FALSE)
+harLIST <- readHAR(harL)
+identical(harLIST, har)
+
+```
+
+### Writing HAR files
+
+Parsed HAR objects of class `har` can be written to file using the
+`writeHAR` function:
+
+```{r}
+harFile <- tempfile(fileext = ".har")
+writeHAR(har, harFile)
+har2 <- readHAR(harFile)
+identical(har, har2)
+```
+
+`writeHAR` exports the HAR in JSON format.
+
+
+## Visualising HAR data
+
+### HARviewer
+
+`HARtools` includes a `HARviewer` function. `HARviewer` is a `htmlwidget`
+which utilises the [PerfCascade](https://github.com/micmro/PerfCascade) to 
+create a waterfall view of an HAR object.
+
+```{r}
+har <- readHAR(system.file(package = "HARtools", "exdata",
+                           "r-project.org.161028_W2_11MA.har"))
+hv <- HARviewer(har, width="100%", height="100%")
+# view in R
+hv
+
+```
+
+The above HAR data was obtained from testing the [r-project](http://r-project.org)
+webpage using [WebPageTest](https://www.webpagetest.org/). 
+
+### Embedding HAR charts in a shiny app
+
+`HARtools` has a `renderHARviewer` function and a corresponding `HARviewerOutput`
+function which can be used in a `shiny` server and ui respectively to 
+embed a `HARviewer` waterfall chart in a shiny app:
+
+```{r, eval=FALSE}
+library(shiny)
+if(interactive()){
+  library(HARtools)
+  har <- readHAR(system.file(package = "HARtools", "exdata",
+                             "r-project.org.161028_W2_11MA.har"))
+  hv <- HARviewer(har)
+  
+  app <- shinyApp(
+    ui = fluidPage(
+      HARviewerOutput("myHAR")
+    ),
+    server = function(input, output) {
+      output$myHAR <- renderHARviewer(hv)
+    }
+  )  
+  runApp(app)
+}
+```
+
+## Obtaining HAR data
+
+### Using a browser
+Most modern browser have developer tools that often have the option to 
+export a browsing session as HAR data see for example this 
+[article](https://confluence.atlassian.com/kb/generating-har-files-and-analysing-web-requests-720420612.html).
+
+### Using Browser Mob Proxy
+
+[Browser Mob Proxy](https://bmp.lightbody.net/) captures performance data 
+for web apps (via the HAR format), as well as manipulate browser behavior 
+and traffic, such as whitelisting and blacklisting content, simulating 
+network traffic and latency, and rewriting HTTP requests and responses.
+
+An R client for BMP is available at 
+https://github.com/johndharrison/bmproxy.
+
+### Using WebPageTest
+
+[WebPagetest](https://github.com/WPO-Foundation/webpagetest) is an open 
+source project that is primarily being developed and supported by Google 
+as part of their efforts to make the web faster.
+
+WebPagetest is a tool that was originally developed by AOL for use 
+internally and was open-sourced in 2008 under a BSD license. The platform 
+is under active development on GitHub and is also packaged up periodically
+and available for download if you would like to run your own instance.
+
+The online version at [www.webpagetest.org](https://www.webpagetest.org) 
+is run for the benefit of the performance community with several companies 
+and individuals providing the testing infrastructure around the globe.
+
+An R client for WPT is available at 
+https://github.com/johndharrison/webpagetestr. It allows the user to send
+test requests to [www.webpagetest.org](https://www.webpagetest.org) or any
+private instance of WPT a user may have access to.
+
