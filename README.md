@@ -26,6 +26,7 @@ devtools::install_github("johndharrison/HARtools")
 #### Read from file
 
 ```
+library(HARtools)
 exampleHAR <- 
   system.file(package = "HARtools", "exdata", "inline-scripts-block.har")
 har <- readHAR(exampleHAR)
@@ -109,3 +110,25 @@ browseURL(tFile)
 ![alt tag](https://raw.githubusercontent.com/johndharrison/HARtools/master/inst/misc/rprojectHAR.png)
 
 The resulting output of HARviewer can be interacted with [here](http://rpubs.com/johndharrison/rprojectHAR).
+
+#### Embed in a Shiny app
+
+```
+library(shiny)
+if(interactive()){
+  library(HARtools)
+  har <- readHAR(system.file(package = "HARtools", "exdata",
+                             "r-project.org.161028_W2_11MA.har"))
+  hv <- HARviewer(har)
+  
+  app <- shinyApp(
+    ui = fluidPage(
+      HARviewerOutput("myHAR")
+    ),
+    server = function(input, output) {
+      output$myHAR <- renderHARviewer(hv)
+    }
+  )  
+  runApp(app)
+}
+```
