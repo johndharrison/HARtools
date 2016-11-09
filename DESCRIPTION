@@ -30,4 +30,4 @@ URL: https://johndharrison.github.io/HARtools/index.html
 URLNote: https://github.com/johndharrison/HARtools
 BugReports: https://github.com/johndharrison/HARtools/issues
 RoxygenNote: 5.0.1
-VignetteBuilder: knitr
+VignetteBuilder: rmarkdown
