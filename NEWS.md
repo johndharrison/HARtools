@@ -1,3 +1,6 @@
+# 0.0.4
+* Add basic use vignette
+
 # 0.0.3
 * Add select bar to HARviewer chart to select between pages in HAR
 * Add shiny bindings for HARviewer chart
