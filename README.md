@@ -19,7 +19,11 @@ To install the current developement version of `HARtools` run:
 ```
 devtools::install_github("johndharrison/HARtools")
 ```
+To install the latest stable CRAN release:
 
+```
+install.packages("HARtools")
+```
 ### Getting started
 
 
