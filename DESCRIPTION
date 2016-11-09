@@ -1,5 +1,5 @@
 Package: HARtools
-Title: Read HTTP Archive (HAR) Data
+Title: Read HTTP Archive ('HAR') Data
 Version: 0.0.5
 Authors@R: c(
     person("John", "Harrison", , "johndharrison0@gmail.com",
@@ -7,7 +7,7 @@ Authors@R: c(
     person("Michael", "Mrowetz", role = c("aut", "cph"),
       comment = "PerfCascade library, https://micmro.github.io/PerfCascade/"))
 Description: The goal of 'HARtools' is to provide a simple set of functions
-    to read/parse, write and visualise HTTP Archive (HAR) files in R.
+    to read/parse, write and visualise HTTP Archive ('HAR') files in R.
 Depends:
     R (>= 3.0.0)
 Imports:
