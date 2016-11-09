@@ -1,3 +1,6 @@
+# 0.0.5
+* Add support for Windows UTF-8 read and write
+
 # 0.0.4
 * Add basic use vignette
 

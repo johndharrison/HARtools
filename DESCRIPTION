@@ -1,6 +1,6 @@
 Package: HARtools
 Title: Read HTTP Archive (HAR) Data
-Version: 0.0.4
+Version: 0.0.5
 Authors@R: c(
     person("John", "Harrison", , "johndharrison0@gmail.com",
       role = c("aut", "cre"), comment = "R package HARtools"),
