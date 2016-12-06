@@ -1,4 +1,4 @@
-/*! github.com/micmro/PerfCascade Version:0.2.4 (05/11/2016) */
+/*! github.com/micmro/PerfCascade Version:0.2.10 (06/12/2016) */
 
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.perfCascade = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
@@ -441,9 +441,24 @@ exports.removeClass = removeClass;
 
 },{}],6:[function(require,module,exports){
 "use strict";
+/**
+ * Creates the html for diagrams legend
+ */
+function makeLegend() {
+    var ulNode = document.createElement("ul");
+    ulNode.className = "resource-legend";
+    ulNode.innerHTML = "\n        <li class=\"legend-blocked\" title=\"Time spent in a queue waiting for a network connection.\">Blocked</li>\n        <li class=\"legend-dns\" title=\"DNS resolution time.\">DNS</li>\n        <li class=\"legend-connect\" title=\"Time required to create TCP connection.\">Connect</li>\n        <li class=\"legend-ssl\" title=\"Time required for SSL/TLS negotiation.\">SSL (TLS)</li>\n        <li class=\"legend-send\" title=\"Time required to send HTTP request to the server.\">Send</li>\n        <li class=\"legend-wait\" title=\"Waiting for a response from the server.\">Wait</li>\n        <li class=\"legend-receive\" title=\"Time required to read entire response from the server (or cache).\">Receive</li>";
+    return ulNode;
+}
+exports.makeLegend = makeLegend;
+
+},{}],7:[function(require,module,exports){
+"use strict";
 var svg_chart_1 = require("./waterfall/svg-chart");
 var paging = require("./paging/paging");
 var har_1 = require("./transformers/har");
+var legend_1 = require("./legend/legend");
+exports.makeLegend = legend_1.makeLegend;
 var waterfallDocsService = require("./state/waterfall-docs-service");
 var globalStateService = require("./state/global-state");
 var misc = require("./helpers/misc");
@@ -469,6 +484,9 @@ function PerfCascade(waterfallDocsData, chartOptions) {
     });
     if (options.pageSelector) {
         paging.initPagingSelectBox(options.pageSelector);
+    }
+    if (options.legendHolder) {
+        options.legendHolder.appendChild(legend_1.makeLegend());
     }
     return doc;
 }
@@ -499,7 +517,7 @@ var paging_1 = require("./paging/paging");
 exports.changePage = paging_1.setSelectedPageIndex;
 //export typings
 
-},{"./helpers/misc":4,"./paging/paging":7,"./state/global-state":8,"./state/waterfall-docs-service":9,"./transformers/har":10,"./waterfall/svg-chart":24}],7:[function(require,module,exports){
+},{"./helpers/misc":4,"./legend/legend":6,"./paging/paging":8,"./state/global-state":9,"./state/waterfall-docs-service":10,"./transformers/har":11,"./waterfall/svg-chart":25}],8:[function(require,module,exports){
 "use strict";
 var waterfallDocsService = require("../state/waterfall-docs-service");
 var selectedPageIndex = 0;
@@ -579,7 +597,7 @@ function initPagingSelectBox(selectbox) {
 }
 exports.initPagingSelectBox = initPagingSelectBox;
 
-},{"../state/waterfall-docs-service":9}],8:[function(require,module,exports){
+},{"../state/waterfall-docs-service":10}],9:[function(require,module,exports){
 "use strict";
 var optionsStore;
 /**
@@ -599,7 +617,7 @@ function getOptions() {
 }
 exports.getOptions = getOptions;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 /*
 * Central service to store HAR data
@@ -623,7 +641,7 @@ function getDocs() {
 }
 exports.getDocs = getDocs;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 var time_block_1 = require("../typing/time-block");
 var styling_converters_1 = require("./styling-converters");
@@ -656,7 +674,6 @@ var HarTransformer = (function () {
         if (pageIndex === void 0) { pageIndex = 0; }
         //make sure it's the *.log base node
         var data = (harData["log"] !== undefined ? harData["log"] : harData);
-        //only support one page (first) for now
         var currentPageIndex = pageIndex;
         var currPage = data.pages[currentPageIndex];
         var pageStartTime = new Date(currPage.startedDateTime).getTime();
@@ -751,7 +768,7 @@ var HarTransformer = (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = HarTransformer;
 
-},{"../typing/time-block":12,"./styling-converters":11}],11:[function(require,module,exports){
+},{"../typing/time-block":13,"./styling-converters":12}],12:[function(require,module,exports){
 "use strict";
 /**
  * Convert a MIME type into it's WPT style request type (font, script etc)
@@ -801,7 +818,7 @@ function mimeToCssClass(mimeType) {
 }
 exports.mimeToCssClass = mimeToCssClass;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 var TimeBlock = (function () {
     function TimeBlock(name, start, end, cssClass, segments, rawResource, requestType) {
@@ -821,7 +838,7 @@ var TimeBlock = (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = TimeBlock;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 var ifValueDefined = function (value, fn) {
     if (typeof value !== "number" || value <= 0) {
@@ -830,7 +847,7 @@ var ifValueDefined = function (value, fn) {
     return fn(value);
 };
 var formatBytes = function (size) { return ifValueDefined(size, function (s) { return (s + " byte (~" + Math.round(s / 1024 * 10) / 10 + "kb)"); }); };
-var formatTime = function (size) { return ifValueDefined(size, function (s) { return (s + "ms"); }); };
+var formatTime = function (size) { return ifValueDefined(size, function (s) { return (s + " ms"); }); };
 var formatDate = function (date) {
     if (!date) {
         return "";
@@ -869,6 +886,12 @@ function getKeys(requestID, block) {
     var getExp = function (name) {
         return entry[name] || entry["_" + name] || entry.request[name] || entry.request["_" + name] || "";
     };
+    var getExpTimings = function (name) {
+        if (entry.timings[name] && entry.timings[name] > 0) {
+            return entry.timings[name] + " ms";
+        }
+        return "";
+    };
     var getExpNotNull = function (name) {
         var resp = getExp(name);
         return resp !== "0" ? resp : "";
@@ -877,23 +900,10 @@ function getKeys(requestID, block) {
         var resp = parseInt(getExp(name), 10);
         return (isNaN(resp) || resp <= 0) ? "" : formatBytes(resp);
     };
-    var getExpTimeRange = function (name) {
-        var ms = getExp(name + "_ms").toString();
-        var start = getExp(name + "_start");
-        var end = getExp(name + "_end");
-        var resp = [];
-        if (start && end && start < end) {
-            resp.push(start + "ms - " + end + "ms");
-        }
-        if (ms && ms !== "-1") {
-            resp.push("(" + ms + "ms)");
-        }
-        return resp.join(" ");
-    };
     return {
         "general": {
             "Request Number": "#" + requestID,
-            "Started": new Date(entry.startedDateTime).toLocaleString() + " (" + formatTime(block.start) + " after page reqest started)",
+            "Started": new Date(entry.startedDateTime).toLocaleString() + " (" + formatTime(block.start) + " after page request started)",
             "Duration": formatTime(entry.time),
             "Error/Status Code": entry.response.status + " " + entry.response.statusText,
             "Server IPAddress": entry.serverIPAddress,
@@ -919,14 +929,13 @@ function getKeys(requestID, block) {
             "Image Save": getExpAsByte("image_save"),
         },
         "timings": {
-            "Server RTT": getExpTimeRange("server_rtt"),
-            "all (combined)": getExpTimeRange("all"),
-            "DNS": getExpTimeRange("dns"),
-            "Connect": getExpTimeRange("connect"),
-            "TLS/SSL": getExpTimeRange("ssl"),
-            "Load": getExpTimeRange("load"),
-            "TTFB": getExpTimeRange("ttfb"),
-            "Download": getExpTimeRange("download"),
+            "Blocked": getExpTimings("blocked"),
+            "Connect": getExpTimings("connect"),
+            "DNS": getExpTimings("dns"),
+            "Receive": getExpTimings("receive"),
+            "Send": getExpTimings("send"),
+            "SSL": getExpTimings("ssl"),
+            "Wait": getExpTimings("wait"),
         },
         "request": {
             "Method": entry.request.method,
@@ -984,7 +993,7 @@ function getKeys(requestID, block) {
 }
 exports.getKeys = getKeys;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 var extract_details_keys_1 = require("./extract-details-keys");
 function makeDefinitionList(dlKeyValues, addClass) {
@@ -1037,13 +1046,13 @@ function createDetailsBody(requestID, block, accordeonHeight) {
         return pre;
     }, {}));
     var imgTab = makeImgTab(accordeonHeight, block);
-    body.innerHTML = "\n    <div class=\"wrapper\">\n      <header class=\"type-" + block.requestType + "\">\n        <h3><strong>#" + requestID + "</strong> " + block.name + "</h3>\n        <nav class=\"tab-nav\">\n        <ul>\n          " + makeTabBtn("Preview", imgTab) + "\n          " + makeTabBtn("General", generalTab) + "\n          <li><button class=\"tab-button\">Request</button></li>\n          <li><button class=\"tab-button\">Response</button></li>\n          " + makeTabBtn("Timings", timingsTab) + "\n          <li><button class=\"tab-button\">Raw Data</button></li>\n        </ul>\n        </nav>\n      </header>\n      " + imgTab + "\n      " + generalTab + "\n      <div class=\"tab\">\n        <dl>\n          " + requestDl + "\n        </dl>\n        <h2>All Request Headers</h2>\n        <dl>\n          " + requestHeadersDl + "\n        </dl>\n      </div>\n      <div class=\"tab\">\n        <dl>\n          " + responseDl + "\n        </dl>\n        <h2>All Response Headers</h2>\n        <dl>\n          " + responseHeadersDl + "\n        </dl>\n      </div>\n      " + timingsTab + "\n      <div class=\"tab\">\n        <code>\n          <pre>" + JSON.stringify(block.rawResource, null, 2) + "</pre>\n        </code>\n      </div>\n    </div>\n    ";
+    body.innerHTML = "\n    <div class=\"wrapper\">\n      <header class=\"type-" + block.requestType + "\">\n        <h3><strong>#" + requestID + "</strong> " + block.name + "</h3>\n        <nav class=\"tab-nav\">\n        <ul>\n          " + makeTabBtn("General", generalTab) + "\n          <li><button class=\"tab-button\">Request</button></li>\n          <li><button class=\"tab-button\">Response</button></li>\n          " + makeTabBtn("Timings", timingsTab) + "\n          <li><button class=\"tab-button\">Raw Data</button></li>\n          " + makeTabBtn("Preview", imgTab) + "\n        </ul>\n        </nav>\n      </header>\n      " + generalTab + "\n      <div class=\"tab\">\n        <dl>\n          " + requestDl + "\n        </dl>\n        <h2>All Request Headers</h2>\n        <dl>\n          " + requestHeadersDl + "\n        </dl>\n      </div>\n      <div class=\"tab\">\n        <dl>\n          " + responseDl + "\n        </dl>\n        <h2>All Response Headers</h2>\n        <dl>\n          " + responseHeadersDl + "\n        </dl>\n      </div>\n      " + timingsTab + "\n      <div class=\"tab\">\n        <code>\n          <pre>" + JSON.stringify(block.rawResource, null, 2) + "</pre>\n        </code>\n      </div>\n      " + imgTab + "\n    </div>\n    ";
     html.appendChild(body);
     return html;
 }
 exports.createDetailsBody = createDetailsBody;
 
-},{"./extract-details-keys":13}],15:[function(require,module,exports){
+},{"./extract-details-keys":14}],16:[function(require,module,exports){
 //simple pub/sub for change to the overlay
 "use strict";
 exports.eventTypes = {
@@ -1061,7 +1070,7 @@ function publishToOvelayChanges(change) {
 }
 exports.publishToOvelayChanges = publishToOvelayChanges;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 var svg_details_overlay_1 = require("./svg-details-overlay");
 var overlayChangesPubSub = require("./overlay-changes-pub-sub");
@@ -1167,7 +1176,7 @@ function renderOverlays(barX, accordeonHeight, overlayHolder, unit) {
     });
 }
 
-},{"./overlay-changes-pub-sub":15,"./svg-details-overlay":17}],17:[function(require,module,exports){
+},{"./overlay-changes-pub-sub":16,"./svg-details-overlay":18}],18:[function(require,module,exports){
 "use strict";
 var svg = require("../../helpers/svg");
 var dom = require("../../helpers/dom");
@@ -1215,7 +1224,7 @@ function createHolder(y, accordeonHeight) {
     return innerHolder;
 }
 function createRowInfoOverlay(indexBackup, barX, y, accordeonHeight, block, onClose, unit) {
-    var requestID = parseInt(block.rawResource._index, 10) || indexBackup;
+    var requestID = parseInt(block.rawResource._index + 1, 10) || indexBackup + 1;
     var wrapper = svg.newG("outer-info-overlay-holder", {
         "width": "100%"
     });
@@ -1251,7 +1260,7 @@ function createRowInfoOverlay(indexBackup, barX, y, accordeonHeight, block, onCl
 }
 exports.createRowInfoOverlay = createRowInfoOverlay;
 
-},{"../../helpers/dom":1,"../../helpers/svg":5,"./html-details-body":14}],18:[function(require,module,exports){
+},{"../../helpers/dom":1,"../../helpers/svg":5,"./html-details-body":15}],19:[function(require,module,exports){
 /**
  * Creation of sub-components used in a ressource request row
  */
@@ -1304,7 +1313,7 @@ function getIndicators(block, docIsSsl) {
 }
 exports.getIndicators = getIndicators;
 
-},{"../../helpers/heuristics":2}],19:[function(require,module,exports){
+},{"../../helpers/heuristics":2}],20:[function(require,module,exports){
 /**
  * Creation of sub-components used in a ressource request row
  */
@@ -1366,13 +1375,14 @@ function createTimingLable(rectData, timeTotal, firstX) {
     var minWidth = 500; // minimum supported diagram width that should show the timing lable uncropped
     var spacingPerc = (5 / minWidth * 100);
     var y = rectData.y + rectData.height / 1.5;
+    var totalLabel = Math.round(timeTotal) + " ms";
     var percStart = (rectData.x + rectData.width) / rectData.unit + spacingPerc;
-    var txtEl = svg.newTextEl(timeTotal + "ms", y, misc.roundNumber(percStart, 2) + "%");
+    var txtEl = svg.newTextEl(totalLabel, y, misc.roundNumber(percStart, 2) + "%");
     //(pessimistic) estimation of text with to avoid performance penalty of `getBBox`
-    var roughTxtWidth = (timeTotal + "ms").length * 8;
+    var roughTxtWidth = totalLabel.length * 8;
     if (percStart + (roughTxtWidth / minWidth * 100) > 100) {
         percStart = firstX / rectData.unit - spacingPerc;
-        txtEl = svg.newTextEl(timeTotal + "ms", y, misc.roundNumber(percStart, 2) + "%", { "textAnchor": "end" });
+        txtEl = svg.newTextEl(totalLabel, y, misc.roundNumber(percStart, 2) + "%", { "textAnchor": "end" });
     }
     return txtEl;
 }
@@ -1527,7 +1537,7 @@ function createRowBg(y, rowHeight, onClick) {
 }
 exports.createRowBg = createRowBg;
 
-},{"../../helpers/misc":4,"../../helpers/svg":5}],20:[function(require,module,exports){
+},{"../../helpers/misc":4,"../../helpers/svg":5}],21:[function(require,module,exports){
 "use strict";
 var svg = require("../../helpers/svg");
 var icons = require("../../helpers/icons");
@@ -1569,9 +1579,10 @@ function createRow(index, rectData, block, labelXPos, options, docIsSsl, onDetai
         "x": leftColumnWith + "%",
         "width": (100 - leftColumnWith) + "%"
     });
+    var requestNumber = (index + 1) + ". ";
     var rect = rowSubComponents.createRect(rectData, block.segments, block.total);
-    var shortLabel = rowSubComponents.createRequestLabelClipped(labelXPos, y, misc.ressourceUrlFormater(block.name, 40), rowHeight, "clipPath");
-    var fullLabel = rowSubComponents.createRequestLabelFull(labelXPos, y, block.name, rowHeight);
+    var shortLabel = rowSubComponents.createRequestLabelClipped(labelXPos, y, requestNumber + misc.ressourceUrlFormater(block.name, 40), rowHeight, "clipPath");
+    var fullLabel = rowSubComponents.createRequestLabelFull(labelXPos, y, requestNumber + block.name, rowHeight);
     var rowName = rowSubComponents.createNameRowBg(y, rowHeight, onDetailsOverlayShow, leftColumnWith);
     var rowBar = rowSubComponents.createRowBg(y, rowHeight, onDetailsOverlayShow);
     var bgStripe = rowSubComponents.createBgStripe(y, rowHeight, (index % 2 === 0));
@@ -1594,7 +1605,7 @@ function createRow(index, rectData, block, labelXPos, options, docIsSsl, onDetai
 }
 exports.createRow = createRow;
 
-},{"../../helpers/heuristics":2,"../../helpers/icons":3,"../../helpers/misc":4,"../../helpers/svg":5,"./svg-indicators":18,"./svg-row-subcomponents":19}],21:[function(require,module,exports){
+},{"../../helpers/heuristics":2,"../../helpers/icons":3,"../../helpers/misc":4,"../../helpers/svg":5,"./svg-indicators":19,"./svg-row-subcomponents":20}],22:[function(require,module,exports){
 /**
  * vertical alignment helper lines
  * */
@@ -1656,7 +1667,7 @@ function makeHoverEvtListeners(hoverEl) {
 }
 exports.makeHoverEvtListeners = makeHoverEvtListeners;
 
-},{"../../helpers/svg":5}],22:[function(require,module,exports){
+},{"../../helpers/svg":5}],23:[function(require,module,exports){
 /**
  * Creation of sub-components of the waterfall chart
  */
@@ -1664,38 +1675,69 @@ exports.makeHoverEvtListeners = makeHoverEvtListeners;
 var svg = require("../../helpers/svg");
 var overlayChangesPubSub = require("../details-overlay/overlay-changes-pub-sub");
 /**
+ * Renders a per-second marker line and appends it to `timeHolder`
+ *
+ * @param  {SVGGElement} timeHolder element that the second marker is appended to
+ * @param  {number} diagramHeight  Full height of SVG in px
+ * @param  {number} secsTotal  total number of seconds in the timeline
+ * @param  {number} sec second of the time marker to render
+ * @param  {boolean} addLabel  if true a time label is added to the marker-line
+ */
+var appendSecond = function (timeHolder, diagramHeight, secsTotal, sec, addLabel) {
+    if (addLabel === void 0) { addLabel = false; }
+    var secPerc = 100 / secsTotal;
+    /** just used if `addLabel` is `true` - for full seconds */
+    var lineLabel;
+    var lineClass = "sub-second-line";
+    if (addLabel) {
+        lineClass = "second-line";
+        lineLabel = svg.newTextEl(sec + "s", diagramHeight);
+        if (sec > secsTotal - 0.2) {
+            lineLabel.setAttribute("x", secPerc * sec - 0.5 + "%");
+            lineLabel.setAttribute("text-anchor", "end");
+        }
+        else {
+            lineLabel.setAttribute("x", secPerc * sec + 0.5 + "%");
+        }
+    }
+    var lineEl = svg.newEl("line", {
+        "class": lineClass,
+        "x1": secPerc * sec + "%",
+        "y1": "0",
+        "x2": secPerc * sec + "%",
+        "y2": diagramHeight
+    });
+    overlayChangesPubSub.subscribeToOvelayChanges(function (change) {
+        var offset = change.combinedOverlayHeight;
+        //figure out why there is an offset
+        var scale = (diagramHeight + offset) / (diagramHeight);
+        lineEl.setAttribute("transform", "scale(1, " + scale + ")");
+        if (addLabel) {
+            lineLabel.setAttribute("transform", "translate(0, " + offset + ")");
+        }
+    });
+    timeHolder.appendChild(lineEl);
+    if (addLabel) {
+        timeHolder.appendChild(lineLabel);
+    }
+};
+/**
  * Renders the time-scale SVG elements (1sec, 2sec...)
  * @param {number} durationMs    Full duration of the waterfall
  * @param {number} diagramHeight Full height of SVG in px
+ * @param {number} subSecondStepMs  Distant (time in ms) between sub-second time-scales
  */
-function createTimeScale(durationMs, diagramHeight) {
+function createTimeScale(durationMs, diagramHeight, subSecondStepMs) {
+    if (subSecondStepMs === void 0) { subSecondStepMs = 200; }
     var timeHolder = svg.newEl("g", { class: "time-scale full-width" });
-    for (var i = 0, secs = durationMs / 1000, secPerc = 100 / secs; i <= secs; i++) {
-        (function (i, secs, secPerc) {
-            var lineLabel = svg.newTextEl(i + "s", diagramHeight);
-            if (i > secs - 0.2) {
-                lineLabel.setAttribute("x", secPerc * i - 0.5 + "%");
-                lineLabel.setAttribute("text-anchor", "end");
-            }
-            else {
-                lineLabel.setAttribute("x", secPerc * i + 0.5 + "%");
-            }
-            var lineEl = svg.newEl("line", {
-                "x1": secPerc * i + "%",
-                "y1": "0",
-                "x2": secPerc * i + "%",
-                "y2": diagramHeight
-            });
-            overlayChangesPubSub.subscribeToOvelayChanges(function (change) {
-                var offset = change.combinedOverlayHeight;
-                //figure out why there is an offset
-                var scale = (diagramHeight + offset) / (diagramHeight);
-                lineEl.setAttribute("transform", "scale(1, " + scale + ")");
-                lineLabel.setAttribute("transform", "translate(0, " + offset + ")");
-            });
-            timeHolder.appendChild(lineEl);
-            timeHolder.appendChild(lineLabel);
-        })(i, secs, secPerc);
+    /** steps between each second marker */
+    var subSecondSteps = 1000 / subSecondStepMs;
+    var secs = durationMs / 1000;
+    var steps = durationMs / subSecondStepMs;
+    for (var i = 0; i <= steps; i++) {
+        var isFullSec = i % subSecondSteps === 0;
+        var secValue = i / subSecondSteps;
+        appendSecond(timeHolder, diagramHeight, secs, secValue, isFullSec);
     }
     return timeHolder;
 }
@@ -1716,7 +1758,7 @@ function createBgRect(block, unit, diagramHeight) {
 }
 exports.createBgRect = createBgRect;
 
-},{"../../helpers/svg":5,"../details-overlay/overlay-changes-pub-sub":15}],23:[function(require,module,exports){
+},{"../../helpers/svg":5,"../details-overlay/overlay-changes-pub-sub":16}],24:[function(require,module,exports){
 "use strict";
 var svg = require("../../helpers/svg");
 var overlayChangesPubSub = require("../details-overlay/overlay-changes-pub-sub");
@@ -1801,7 +1843,7 @@ function createMarks(marks, unit, diagramHeight) {
 }
 exports.createMarks = createMarks;
 
-},{"../../helpers/svg":5,"../details-overlay/overlay-changes-pub-sub":15}],24:[function(require,module,exports){
+},{"../../helpers/svg":5,"../details-overlay/overlay-changes-pub-sub":16}],25:[function(require,module,exports){
 "use strict";
 var svg = require("../helpers/svg");
 var generalComponents = require("./sub-components/svg-general-components");
@@ -1928,5 +1970,5 @@ function createWaterfallSvg(data) {
 }
 exports.createWaterfallSvg = createWaterfallSvg;
 
-},{"../helpers/svg":5,"../state/global-state":8,"./details-overlay/overlay-changes-pub-sub":15,"./details-overlay/svg-details-overlay-manager":16,"./row/svg-indicators":18,"./row/svg-row":20,"./sub-components/svg-alignment-helper":21,"./sub-components/svg-general-components":22,"./sub-components/svg-marks":23}]},{},[6])(6)
+},{"../helpers/svg":5,"../state/global-state":9,"./details-overlay/overlay-changes-pub-sub":16,"./details-overlay/svg-details-overlay-manager":17,"./row/svg-indicators":19,"./row/svg-row":21,"./sub-components/svg-alignment-helper":22,"./sub-components/svg-general-components":23,"./sub-components/svg-marks":24}]},{},[7])(7)
 });
