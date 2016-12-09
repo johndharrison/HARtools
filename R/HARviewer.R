@@ -5,6 +5,10 @@
 #' @param width Optional width of the HAR viewer
 #' @param height Optional height of the HAR viewer
 #' @param elementId Optional element id to assign to the HAR viewer
+#' @param showAlignmentHelpers Show verticale lines to easier spot
+#'     potential dependencies/blocking between requests
+#' @param showIndicatorIcons Show warning icons for potential issues on
+#'     the left
 #'
 #' @return Returns a \code{\link[htmlwidgets]{createWidget}} object. A
 #'    waterfall of the HAR using the
@@ -26,13 +30,15 @@
 #' browseURL(tFile)
 #' }
 
-HARviewer <- function(har, width = NULL, height = NULL, elementId = NULL){
+HARviewer <- function(har, width = NULL, height = NULL, elementId = NULL,
+                      showAlignmentHelpers = TRUE,
+                      showIndicatorIcons = TRUE){
   x <- list(
     data = har,
     options = list(
       rowHeight = 23,
-      showAlignmentHelpers = TRUE,
-      showIndicatorIcons = TRUE,
+      showAlignmentHelpers = showAlignmentHelpers,
+      showIndicatorIcons = showIndicatorIcons,
       leftColumnWith = 25
     )
   )
