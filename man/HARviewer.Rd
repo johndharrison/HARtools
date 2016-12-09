@@ -4,7 +4,8 @@
 \alias{HARviewer}
 \title{View HAR object}
 \usage{
-HARviewer(har, width = NULL, height = NULL, elementId = NULL)
+HARviewer(har, width = NULL, height = NULL, elementId = NULL,
+  showAlignmentHelpers = TRUE, showIndicatorIcons = TRUE)
 }
 \arguments{
 \item{har}{A parsed har object output from \code{\link{readHAR}}}
@@ -14,6 +15,12 @@ HARviewer(har, width = NULL, height = NULL, elementId = NULL)
 \item{height}{Optional height of the HAR viewer}
 
 \item{elementId}{Optional element id to assign to the HAR viewer}
+
+\item{showAlignmentHelpers}{Show verticale lines to easier spot
+potential dependencies/blocking between requests}
+
+\item{showIndicatorIcons}{Show warning icons for potential issues on
+the left}
 }
 \value{
 Returns a \code{\link[htmlwidgets]{createWidget}} object. A
